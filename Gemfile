@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '1.9.3'
 
 gem 'rails', '3.2.13'
 
@@ -7,19 +8,21 @@ gem 'rails', '3.2.13'
 
 group :development do
 	gem 'sqlite3', '1.3.8'
+	#gem 'mysql2', '0.3.13'
 end
-#gem 'mysql2', '0.3.13'
+
+group :production do
+  gem 'pg', '0.15.1'
+  gem 'rails_12factor', '0.0.2'
+end
 
 group :assets do
-	# Use SCSS for stylesheets
   gem 'sass-rails',   '~> 3.2.3'
-   # Use CoffeeScript for .js.coffee assets and views
   gem 'coffee-rails', '~> 3.2.1'
-  # Use Uglifier as compressor for JavaScript assets
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
-
-  #gem 'therubyracer', :platforms => :ruby
+  gem 'turbolinks', '1.1.1'
+  gem 'jbuilder', '1.0.2'
 end
 
 gem 'jquery-rails', '3.0.4'
