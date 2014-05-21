@@ -13,14 +13,20 @@ you can be interrupted or not.
 
 == Create an account
 
+Coming soon...
+
 == Create a new team 
+
+Coming soon...
 
 == Join a team
 
+Coming soon...
+
 == The Status Reel
 
-== Status Reel: Team view
-
-== Status Reel: User view
+Coming soon...
 
 == Reporting
+
+Coming soon...
