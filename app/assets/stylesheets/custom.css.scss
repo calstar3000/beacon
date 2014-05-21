@@ -33,6 +33,10 @@ textarea {
 	}
 }
 
+.centered {
+	margin: 0 auto;
+}
+
 /* typography */
 
 h1, h2, h3, h4, h5, h6 {
@@ -107,5 +111,23 @@ footer {
 			float: left;
   		margin-left: 10px;
 		}
+	}
+}
+
+/* forms */
+
+form {
+	padding: 10px;
+
+	&.signup-form {
+		width: 300px;
+	}
+
+	input {
+		width: 290px; 
+	}
+
+	input.submit-button {
+		margin-top: 10px;
 	}
 }
