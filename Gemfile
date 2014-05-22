@@ -4,6 +4,7 @@ ruby '1.9.3'
 gem 'rails', '3.2.13'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'sprockets', '2.2.2'
+gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
