@@ -40,11 +40,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: "Welcome to Beacon. It's great to have you on board!" }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: "User was successfully updated." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -80,4 +80,10 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
 end
