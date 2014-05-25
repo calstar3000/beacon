@@ -1,0 +1,20 @@
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_tag("/sessions", method: "post", class: "signup-form centered") do |f| %>
+      <div class="field">
+        <%= label(:session, :email) %>
+        <%= text_field(:session, :email) %>
+      </div>
+      <div class="field">
+        <%= label(:session, :password) %>
+        <%= password_field(:session, :password) %>
+      </div>
+      <div class="actions">
+        <%= submit_tag("Sign me in!", :class => "btn btn-medium btn-primary submit-button") %>
+      </div>
+    <% end %>
+    <br />
+    <p>New to Beacon? <%= link_to "Sign up now!", signup_path %></p>
+  </div>
+</div>
