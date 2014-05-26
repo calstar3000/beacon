@@ -44,6 +44,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in @user
         format.html { redirect_to @user, notice: "Welcome to Beacon. It's great to have you on board!" }
         format.json { render json: @user, status: :created, location: @user }
       else
