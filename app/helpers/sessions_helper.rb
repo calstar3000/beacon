@@ -18,7 +18,7 @@ module SessionsHelper
 	end
 
 	def current_user=(user)
-		@current_user = user
+		user = current_user
 	end
 
 	def current_user
@@ -28,6 +28,11 @@ module SessionsHelper
 		remember_token = User.digest(cookie_remember_token)
 		# find the member using the token if one doesn't exist already
 		@current_user ||= User.find_by_remember_token(remember_token)
+	end
+
+	# check a given user is the current user
+	def current_user?(user)
+		@current_user == user
 	end
 
 	def sign_out
@@ -41,6 +46,16 @@ module SessionsHelper
 		cookies.delete(:remember_token)
 		# set the current user to nothing, in case we ever want to sign out without a redirect
 		self.current_user = nil
+	end
+
+	def redirect_back_or(default)
+		redirect_to(session[:return_to] || default)
+		session.delete(:return_to)
+	end
+
+	# store the current url in the session, but only if it's a GET 
+	def store_location
+		session[:return_to] = request.url if request.get?
 	end
 
 end

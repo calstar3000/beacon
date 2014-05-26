@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
+  before_filter :signed_in_user,  only: [:index, :edit, :update, :destroy] 
+  before_filter :correct_user,    only: [:edit, :update] 
+  before_filter :admin_user,      only: :destroy
+
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.paginate(page: params[:page], per_page: 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,7 +38,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
   end
 
   # POST /users
@@ -57,11 +60,10 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
     respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: "User was successfully updated." }
+      if @user.update_attributes(user_params)
+        flash[:success] = "User was successfully updated."
+        format.html { redirect_to @user }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -77,6 +79,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
+      flash[:success] = "User was successfully deleted."
       format.html { redirect_to users_url }
       format.json { head :no_content }
     end
@@ -85,6 +88,22 @@ class UsersController < ApplicationController
   private
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def signed_in_user
+      unless signed_in?
+        store_location
+        redirect_to signin_url, notice: "Please sign in." unless signed_in?
+      end
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to root_url unless current_user?(@user)
+    end
+
+    def admin_user
+      redirect_to root_url unless current_user.admin?
     end
 
 end
