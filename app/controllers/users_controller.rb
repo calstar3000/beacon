@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user,  only: [:index, :edit, :update, :destroy] 
-  before_filter :correct_user,    only: [:edit, :update] 
+  before_filter :signed_out_user, only: [:new, :create]
+  before_filter :correct_user,    only: [:edit, :update]
   before_filter :admin_user,      only: :destroy
 
   # GET /users
@@ -76,7 +77,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+    @user.destroy unless current_user?(@user)
 
     respond_to do |format|
       flash[:success] = "User was successfully deleted."
@@ -95,6 +96,10 @@ class UsersController < ApplicationController
         store_location
         redirect_to signin_url, notice: "Please sign in." unless signed_in?
       end
+    end
+
+    def signed_out_user
+        redirect_to root_url if signed_in?
     end
 
     def correct_user
