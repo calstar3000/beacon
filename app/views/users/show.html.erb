@@ -11,6 +11,16 @@
       </p>
     </section>
   </aside>
+  <div class="span8">
+    <% if @user.statuses.any? %>
+      <h3>Statuses (<%= @user.statuses.count %>)</h3>
+      <ol class="statuses">
+        <%= render @statuses %>
+      </ol>
+      <%= will_paginate @statuses %>
+    <% end %>
+  </div>
+
 </div>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

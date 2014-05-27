@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    @statuses = @user.statuses.paginate(page: params[:page], per_page: 20)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -87,16 +88,10 @@ class UsersController < ApplicationController
   end
 
   private
+
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    end
-
-    def signed_in_user
-      unless signed_in?
-        store_location
-        redirect_to signin_url, notice: "Please sign in." unless signed_in?
-      end
-    end
+    end 
 
     def signed_out_user
         redirect_to root_url if signed_in?

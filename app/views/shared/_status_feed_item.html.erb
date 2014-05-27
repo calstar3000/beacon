@@ -1,0 +1,8 @@
+<li id="<%= status_feed_item.id %>">
+  <%= link_to gravatar_for(status_feed_item.user), status_feed_item.user %>
+  <span class="user">
+    <%= link_to status_feed_item.user.name, status_feed_item.user %>
+  </span>
+  <%= render "shared/status_content", object: status_feed_item %>
+  <%= render "shared/status_delete_link", object: status_feed_item %>
+</li>

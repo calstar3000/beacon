@@ -2,6 +2,7 @@ Beacon::Application.routes.draw do
   resources :statuses
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
+  resources :statuses, only: [:create, :destroy]
 
   root to: "static_pages#home"
   

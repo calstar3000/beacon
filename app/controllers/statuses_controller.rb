@@ -1,4 +1,7 @@
 class StatusesController < ApplicationController
+  before_filter :signed_in_user 
+  before_filter :correct_user,  only: :destroy
+
   # GET /statuses
   # GET /statuses.json
   def index
@@ -40,15 +43,17 @@ class StatusesController < ApplicationController
   # POST /statuses
   # POST /statuses.json
   def create
-    @status = Status.new(params[:status])
+    @status = current_user.statuses.build(status_params)
 
     respond_to do |format|
       if @status.save
-        format.html { redirect_to @status, notice: 'Status was successfully created.' }
-        format.json { render json: @status, status: :created, location: @status }
+        flash[:success] = "Status was successfully created."
+        format.html { redirect_to root_url }
+        #format.json { render json: @status, status: :created, location: @status }
       else
-        format.html { render action: "new" }
-        format.json { render json: @status.errors, status: :unprocessable_entity }
+        @status_feed = current_user.status_feed.paginate(page: params[:page], per_page: 20)
+        format.html { render "static_pages/home" }
+        #format.json { render json: @status.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -72,12 +77,25 @@ class StatusesController < ApplicationController
   # DELETE /statuses/1
   # DELETE /statuses/1.json
   def destroy
-    @status = Status.find(params[:id])
     @status.destroy
 
     respond_to do |format|
-      format.html { redirect_to statuses_url }
+      flash[:success] = "Status was successfully destroyed"
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def status_params
+      params.require(:status).permit(:content)
+    end
+
+    def correct_user
+      @status = current_user.statuses.find_by_id(params[:id])
+    rescue
+      redirect_to root_url
+    end
+
 end

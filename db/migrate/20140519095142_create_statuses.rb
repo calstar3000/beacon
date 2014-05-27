@@ -6,5 +6,6 @@ class CreateStatuses < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :statuses, [:user_id, :created_at]
   end
 end

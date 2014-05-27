@@ -35,6 +35,14 @@ module SessionsHelper
 		@current_user == user
 	end
 
+	# redirect to signin page (remembering the location) if not signed in
+	def signed_in_user
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in." unless signed_in?
+    end
+ 	end
+
 	def sign_out
 		# create a new token
 		remember_token = User.new_remember_token

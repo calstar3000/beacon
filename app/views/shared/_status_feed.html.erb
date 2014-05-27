@@ -1,0 +1,6 @@
+<% if @status_feed.any? %>
+  <ol class="statuses">
+    <%= render partial: 'shared/status_feed_item', collection: @status_feed %>
+  </ol>
+  <%= will_paginate @status_feed %>
+<% end %>

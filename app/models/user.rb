@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 	attr_accessible :email, :name, :password, :password_confirmation, :admin
 
-	has_many :statuses
+	has_many :statuses, dependent: :destroy
 
 	#validates_associated :statuses
 	validates :name, 	presence: true, 
@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
 
   def User.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
+  end
+
+  def status_feed
+    Status.where("user_id = ?", id)
   end
 
 	private
