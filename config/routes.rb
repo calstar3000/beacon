@@ -1,8 +1,14 @@
 Beacon::Application.routes.draw do
   resources :statuses
-  resources :users
-  resources :sessions, only: [:new, :create, :destroy]
-  resources :statuses, only: [:create, :destroy]
+  resources :sessions,      only: [:new, :create, :destroy]
+  resources :statuses,      only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
+
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
 
   root to: "static_pages#home"
   

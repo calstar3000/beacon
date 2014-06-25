@@ -5,8 +5,10 @@ class User < ActiveRecord::Base
 	attr_accessible :email, :name, :password, :password_confirmation, :admin
 
 	has_many :statuses, dependent: :destroy
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :followed_users, through: :relationships, source: :followed
 	has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
-	has_many :followed_users, through: :relationships, source: :follower
+	has_many :followers, through: :reverse_relationships, source: :follower
 
 	#validates_associated :statuses
 	validates :name, 	presence: true, 
@@ -35,15 +37,15 @@ class User < ActiveRecord::Base
   end
 
   def following?(other_user)
-  	self.relationships.find_by(followed_id: other_user.id)
+  	self.relationships.find_by_followed_id(other_user.id)
   end
 
   def follow!(other_user)
-  	self.relationships.create!(followed_id: other_user.id)
+    self.relationships.create!(followed_id: other_user.id)
   end
 
   def unfollow!(other_user)
-  	self.relationships.find_by(followed_id: other_user.id).destroy
+  	self.relationships.find_by_followed_id(other_user.id).destroy
   end
 
 	private
